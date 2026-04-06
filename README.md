@@ -35,22 +35,21 @@ Python · Scikit-learn · imbalanced-learn · Pandas · Matplotlib · Seaborn ·
 ## Key Findings
 
 - GBM achieved the highest accuracy (87.0%) among base models, but only 48.9% recall on churners at the default threshold
-- SMOTE resampling produced the largest recall improvement: 48.9% → 66.3%
+- Sample weighting produced the largest recall improvement: 48.9% → 75.9%, though at the cost of ~7 accuracy points; SMOTE (66.3% recall) offers a better precision-recall balance for capacity-constrained retention teams
 - Threshold adjustment to 0.35 improved recall without retraining (60.0% recall)
-- Sample weighting pushed recall furthest overall (75.9%) at the cost of ~7 accuracy points
 - GridSearchCV optimised for recall produced marginal gains, suggesting class imbalance is the primary bottleneck — not hyperparameters
 
 ## Visualisations
 
 | Chart | Description |
 |---|---|
-| `images/class_distribution.png` | Class imbalance bar chart (79.6% / 20.4%) |
-| `images/gbm_feature_importance.png` | Top 10 GBM feature importances |
-| `images/roc_curve_comparison.png` | ROC curves — all 6 base models |
-| `images/threshold_tradeoff.png` | Score vs threshold (recall / precision / F1) |
-| `images/precision_recall_threshold.png` | Precision–Recall tradeoff scatter |
-| `images/gbm_mitigation_comparison.png` | Accuracy vs Recall across 4 GBM variants |
-| `images/model_leaderboard.png` | Accuracy vs Recall grouped bar — all 6 models |
+| `images/customer_churn_class_distribution.png` | Class imbalance bar chart (79.6% / 20.4%) |
+| `images/gbm_feature_importance_top_10_predictors.png` | Top 10 GBM feature importances |
+| `images/roc_curve_comparison_all_6_base_models.png` | ROC curves — all 6 base models |
+| `images/precision_vs_recall_tradeoff_across_thresholds.png` | Score vs threshold (recall / precision / F1) |
+| `images/precision_recall_tradeoff_decision_thresholds_default_gbm.png` | Precision–Recall tradeoff scatter |
+| `images/recall_improvement_gbm_mitigation_approaches.png` | Accuracy vs Recall across 4 GBM variants |
+| `images/model_leaderboard_accuracy_vs_recall_catch_rate.png` | Accuracy vs Recall grouped bar — all 6 models |
 
 ## Limitations & Next Steps
 
@@ -67,13 +66,13 @@ Python · Scikit-learn · imbalanced-learn · Pandas · Matplotlib · Seaborn ·
 ├── Churn_Modelling.csv            # Source dataset (10,000 rows)
 ├── gb_tuned_model.pkl             # Serialised tuned GBM (GridSearchCV best estimator)
 ├── images/
-│   ├── class_distribution.png
-│   ├── gbm_feature_importance.png
-│   ├── gbm_mitigation_comparison.png
-│   ├── model_leaderboard.png
-│   ├── precision_recall_threshold.png
-│   ├── roc_curve_comparison.png
-│   └── threshold_tradeoff.png
+│   ├── customer_churn_class_distribution.png
+│   ├── gbm_feature_importance_top_10_predictors.png
+│   ├── model_leaderboard_accuracy_vs_recall_catch_rate.png
+│   ├── precision_recall_tradeoff_decision_thresholds_default_gbm.png
+│   ├── precision_vs_recall_tradeoff_across_thresholds.png
+│   ├── recall_improvement_gbm_mitigation_approaches.png
+│   └── roc_curve_comparison_all_6_base_models.png
 ├── .gitignore
 └── README.md
 ```
