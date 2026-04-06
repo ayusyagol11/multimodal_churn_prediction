@@ -1,5 +1,6 @@
-# Can a Machine Predict Which Bank Customers Will Leave — Before They Do?
+# Predicting Customer Churn: Selecting the Optimal ML Model
 
+**Can a Machine Predict Which Bank Customers Will Leave — Before They Do?**
 **Yes. And this project shows exactly how, what it gets right, and where it falls short.**
 
 ---
