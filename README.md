@@ -2,65 +2,79 @@
 
 ## Overview
 
-This project benchmarks five classification algorithms on the Kaggle Bank Customer Churn dataset (10,000 rows) to identify which customers are most likely to leave. Beyond model selection, the notebook investigates why accuracy is the wrong metric for imbalanced datasets and applies three recall-focused mitigation strategies — SMOTE resampling, decision-threshold tuning, and hyperparameter optimisation — to push churn detection from 49% to 66% recall.
+A multi-model machine learning benchmark on the Kaggle Bank Customer Churn dataset (10,000 rows) that evaluates six classification algorithms across nine configurations. The project goes beyond accuracy to investigate recall-focused improvements using SMOTE, sample weighting, threshold adjustment, and hyperparameter tuning.
 
 ## Business Context
 
-On an imbalanced churn dataset (~80/20 split), a naive classifier that predicts "no churn" achieves 80% accuracy without identifying a single at-risk customer. This project benchmarks 5 algorithms and then investigates recall-focused improvements using SMOTE, threshold tuning, and hyperparameter optimisation. The target metric throughout is **recall on the churner class**: a missed churner is a lost customer.
-
-## Data Source
-
-Dataset: [Kaggle — Bank Customer Churn Modelling](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling) · 10,000 rows · 14 features
+On an imbalanced churn dataset (~80/20 split), a naive classifier that predicts no churn achieves 80% accuracy without identifying a single at-risk customer. The real metric is recall on the churn class — how many at-risk customers does the model actually catch?
 
 ## Tech Stack
 
 Python · Scikit-learn · imbalanced-learn · Pandas · Matplotlib · Seaborn · Jupyter Notebook
 
-## Models Benchmarked
+## Data Source
 
-| Model | Accuracy | Churner Recall | AUC |
-|---|---|---|---|
-| Logistic Regression | 80.8% | 18.7% | 0.77 |
-| Linear SVM | 86.1% | 39.6% | 0.83 |
-| KNN | 82.4% | 34.4% | 0.75 |
-| Random Forest | 86.1% | 46.0% | 0.86 |
-| **Gradient Boosting** | **87.0%** | **48.9%** | **0.87** |
+[Kaggle — Bank Customer Churn Modelling](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling) · 10,000 rows · 14 features
+
+## Model Benchmark Results
+
+| Model | Accuracy | Recall (Churn) | Precision (Churn) | F1 (Churn) | AUC |
+|---|---|---|---|---|---|
+| GBM (Weighted) | 80.0% | **75.9%** | 50.6% | 60.7% | 0.869 |
+| GBM (SMOTE) | 84.7% | 66.3% | 61.5% | 63.8% | 0.867 |
+| GBM | 87.0% | 48.9% | 79.3% | 60.5% | 0.871 |
+| Hist GBM | 86.0% | 48.4% | 73.8% | 58.5% | 0.857 |
+| GBM (Tuned) | 86.6% | 48.2% | 77.5% | 59.4% | 0.867 |
+| Random Forest | 86.1% | 46.0% | 76.3% | 57.4% | 0.855 |
+| SVM (RBF) | 86.1% | 39.6% | 83.4% | 53.7% | 0.827 |
+| KNN | 82.4% | 34.4% | 62.2% | 44.3% | 0.753 |
+| Logistic Regression | 80.8% | 18.7% | 58.9% | 28.4% | 0.775 |
+
+*Sorted by Recall (Churn) descending — the primary business metric.*
 
 ## Key Findings
 
-- **Gradient Boosting is the strongest baseline** across accuracy (87.0%) and AUC (0.87), outperforming all four alternative models. Its sequential error-correction makes it better suited to the non-linear patterns in this dataset than logistic regression or distance-based methods.
-- **Class imbalance suppresses recall significantly.** The default GBM catches fewer than half of churners (48.9% recall) because the training data contains ~4× more non-churners. Accuracy metrics hide this entirely.
-- **SMOTE produced the largest recall gain.** Rebalancing the training set with synthetic minority examples lifted recall from 48.9% → 66.3% at a cost of ~2 accuracy points (87.0% → 84.7%). Threshold tuning at 0.35 offered a lighter-weight alternative at 60.0% recall with no retraining required.
+- GBM achieved the highest accuracy (87.0%) among base models, but only 48.9% recall on churners at the default threshold
+- SMOTE resampling produced the largest recall improvement: 48.9% → 66.3%
+- Threshold adjustment to 0.35 improved recall without retraining (60.0% recall)
+- Sample weighting pushed recall furthest overall (75.9%) at the cost of ~7 accuracy points
+- GridSearchCV optimised for recall produced marginal gains, suggesting class imbalance is the primary bottleneck — not hyperparameters
 
-## Mitigation Approaches
+## Visualisations
 
-| Approach | Accuracy | Churner Recall | Notes |
-|---|---|---|---|
-| Default GBM (baseline) | 87.0% | 48.9% | Class imbalance unaddressed |
-| SMOTE resampling | 84.7% | 66.3% | Applied to training set only |
-| Threshold @ 0.35 | 85.8% | 60.0% | No retraining needed |
-| Tuned GBM (GridSearchCV) | 86.6% | 48.2% | Recall-scored grid; imbalance limits gain |
+| Chart | Description |
+|---|---|
+| `images/class_distribution.png` | Class imbalance bar chart (79.6% / 20.4%) |
+| `images/gbm_feature_importance.png` | Top 10 GBM feature importances |
+| `images/roc_curve_comparison.png` | ROC curves — all 5 base models |
+| `images/threshold_tradeoff.png` | Score vs threshold (recall / precision / F1) |
+| `images/precision_recall_threshold.png` | Precision–Recall tradeoff scatter |
+| `images/gbm_mitigation_comparison.png` | Accuracy vs Recall across 4 GBM variants |
+| `images/model_leaderboard.png` | Accuracy vs Recall grouped bar — all 6 models |
 
 ## Limitations & Next Steps
 
-- **Class imbalance:** Dataset is ~80/20. Default GBM recall on churners was 49%. Mitigation approaches tested: SMOTE, sample weighting, threshold adjustment.
-- **Feature engineering:** No interaction terms or temporal features. Production deployment would benefit from recency/frequency signals.
-- **Dataset:** Standard Kaggle benchmark (10k rows). Illustrative only — not representative of a specific financial institution.
-- **Future work:** XGBoost comparison, Shapley value explanations, end-to-end pipeline with preprocessing.
+- **Class imbalance:** Dataset is ~80/20. SMOTE + threshold tuning pushes churner recall to ~66% — further improvement would require richer features
+- **Feature engineering:** No interaction terms or temporal features. Production would benefit from recency/frequency/monetary signals
+- **Dataset:** Standard Kaggle benchmark (10k rows). Illustrative only
+- **Future work:** XGBoost/LightGBM comparison, SHAP value explanations, end-to-end sklearn Pipeline with preprocessing
 
 ## Project Structure
 
 ```
 .
-├── churn_prediction_model.ipynb   # Main analysis notebook (32 cells)
+├── churn_prediction_model.ipynb   # Main analysis notebook (36 cells)
 ├── Churn_Modelling.csv            # Source dataset (10,000 rows)
 ├── gb_tuned_model.pkl             # Serialised tuned GBM (GridSearchCV best estimator)
 ├── images/
-│   ├── class_distribution.png     # Class imbalance bar chart
-│   ├── gbm_feature_importance.png # Top 10 GBM feature importances
-│   ├── roc_curve_comparison.png   # ROC curves — all 5 models
-│   ├── threshold_tradeoff.png     # Precision–Recall trade-off across thresholds
-│   └── model_leaderboard.png      # Accuracy vs Recall grouped bar chart
+│   ├── class_distribution.png
+│   ├── gbm_feature_importance.png
+│   ├── gbm_mitigation_comparison.png
+│   ├── model_leaderboard.png
+│   ├── precision_recall_threshold.png
+│   ├── roc_curve_comparison.png
+│   └── threshold_tradeoff.png
+├── .gitignore
 └── README.md
 ```
 
