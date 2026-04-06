@@ -46,7 +46,7 @@ Python · Scikit-learn · imbalanced-learn · Pandas · Matplotlib · Seaborn ·
 |---|---|
 | `images/class_distribution.png` | Class imbalance bar chart (79.6% / 20.4%) |
 | `images/gbm_feature_importance.png` | Top 10 GBM feature importances |
-| `images/roc_curve_comparison.png` | ROC curves — all 5 base models |
+| `images/roc_curve_comparison.png` | ROC curves — all 6 base models |
 | `images/threshold_tradeoff.png` | Score vs threshold (recall / precision / F1) |
 | `images/precision_recall_threshold.png` | Precision–Recall tradeoff scatter |
 | `images/gbm_mitigation_comparison.png` | Accuracy vs Recall across 4 GBM variants |
