@@ -1,12 +1,6 @@
 # Predicting Customer Churn: Selecting the Optimal ML Model
 
-## Overview
-
-A multi-model machine learning benchmark on the Kaggle Bank Customer Churn dataset (10,000 rows) that evaluates six classification algorithms across nine configurations. The project goes beyond accuracy to investigate recall-focused improvements using SMOTE, sample weighting, threshold adjustment, and hyperparameter tuning.
-
-## Business Context
-
-On an imbalanced churn dataset (~80/20 split), a naive classifier that predicts no churn achieves 80% accuracy without identifying a single at-risk customer. The real metric is recall on the churn class — how many at-risk customers does the model actuall# Can a Machine Predict Which Bank Customers Will Leave — Before They Do?
+**Can a Machine Predict Which Bank Customers Will Leave — Before They Do?**
 
 **Yes. And this project shows exactly how, what it gets right, and where it falls short.**
 
@@ -151,4 +145,43 @@ Python · Scikit-learn · imbalanced-learn · Pandas · Matplotlib · Seaborn ·
 
 ---
 
-[Portfolio](https://aayushyagol.com) · [LinkedIn](https://linkedin.com/in/aayushyagol) · [GitHub](https://github.com/ayusyagol11)
+## Data Source
+
+[Kaggle — Bank Customer Churn Modelling](https://www.kaggle.com/datasets/shrutimechlearn/churn-modelling) · 10,000 rows · 14 features
+
+---
+
+## Project Structure
+
+```
+.
+├── churn_prediction_model.ipynb   # Main analysis notebook
+├── Churn_Modelling.csv            # Source dataset (10,000 rows)
+├── gb_tuned_model.pkl             # Serialised tuned GBM (GridSearchCV best estimator)
+├── images/
+│   ├── customer_churn_class_distribution.png
+│   ├── gbm_feature_importance_top_10_predictors.png
+│   ├── model_leaderboard_accuracy_vs_recall_catch_rate.png
+│   ├── precision_recall_tradeoff_decision_thresholds_default_gbm.png
+│   ├── precision_vs_recall_tradeoff_across_thresholds.png
+│   ├── recall_improvement_gbm_mitigation_approaches.png
+│   └── roc_curve_comparison_all_6_base_models.png
+├── .gitignore
+└── README.md
+```
+
+---
+
+## How to Run
+
+1. Clone the repo
+2. Install dependencies:
+   ```bash
+   pip install pandas numpy scikit-learn imbalanced-learn matplotlib seaborn
+   ```
+3. Open `churn_prediction_model.ipynb` and run all cells top to bottom
+
+---
+
+
+[Portfolio](https://aayushyagol.com) · [LinkedIn](https://linkedin.com/in/aayush-yagol-046874145) · [GitHub](https://github.com/ayusyagol11/multimodal_churn_prediction)
