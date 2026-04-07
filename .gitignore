@@ -1,27 +1,12 @@
-# macOS
 .DS_Store
-.AppleDouble
-.LSOverride
-
-# Python
+**/.DS_Store
 __pycache__/
 *.pyc
 *.pyo
-*.pyd
-.Python
+.ipynb_checkpoints/
+.env
 *.egg-info/
 dist/
 build/
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb~
-
-# Model artefacts (commit explicitly when needed)
-*.pkl
-*.joblib
-
-# Environment
-.env
 .venv/
 venv/
